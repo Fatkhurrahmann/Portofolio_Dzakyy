@@ -31,7 +31,6 @@
 </head>
 
 <body>
-
   <!-- ======= Mobile nav toggle button ======= -->
   <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
   <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
@@ -291,6 +290,7 @@
               <li data-filter="*" class="filter-active">All</li>
               <li data-filter=".filter-app">App</li>
               <li data-filter=".filter-web">Web</li>
+              <li data-filter=".filter-vidio">vidio</li>
             </ul>
           </div>
         </div>
@@ -311,6 +311,18 @@
             </div>
           </div>
 
+          <div class="col-lg-4 col-md-6 portfolio-item filter-vidio">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portofolio-22.png" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>vidio</h4>
+                <div class="portfolio-links">
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/pSXU46P-2iQ?si=p4I32fDL4qfPQbSb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portofolio-2.png" class="img-fluid" alt="">
@@ -318,12 +330,12 @@
                 <h4>Web 3</h4>
                 <p>Web</p>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portofolio-2.png" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
                   <a href="https://fatkhurrahmann.github.io/ECOURSES/" target="_blank"><i class="bx bx-link"></i></a>
                 </div>
               </div>
             </div>
           </div>
+          
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
               <img src="assets/img/portfolio/portofolio-6.png" class="img-fluid" alt="">
@@ -338,6 +350,17 @@
             </div>
           </div>
 
+          <div class="col-lg-4 col-md-6 portfolio-item filter-vidio">
+            <div class="portfolio-wrap">
+              <img src="assets/img/portfolio/portofolio-22.jpeg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>vidio</h4>
+                <div class="portfolio-links">
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/5ohYgpf-z_w?si=BzbGTXP010Ou3f1p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
@@ -367,33 +390,9 @@
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-7.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 1</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-7.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 1"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" class="portfolio-details-lightbox" data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+         
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-8.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 3</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-8.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" class="portfolio-details-lightbox" data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+          
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
@@ -412,7 +411,8 @@
         </div>
 
       </div>
-    </section><!-- End Portfolio Section -->
+    </section>
+    <!-- End Portfolio Section -->
 
 
 
@@ -423,7 +423,10 @@
         <div class="section-title">
           <h2>Contact</h2>
         </div>
-
+        <div class="map-container">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3124.548477358085!2d106.99218302629582!3d-6.366735104737193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMjEnNTYuMyJTIDEwNsKwNTknMzAuNyJF!5e0!3m2!1sid!2sid!4v1709684176780!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      
         <div class="row mt-1">
 
           <div class="col-lg-4">
@@ -519,7 +522,9 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-
+  <audio id="hidden-audio" controls autoplay>
+    <source src="assets/audio/bekson.mp3"  type="audio/mpeg">
+  </audio>
 </body>
 
 </html>
