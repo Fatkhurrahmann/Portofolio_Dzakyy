@@ -1207,3 +1207,21 @@ section {
 #footer .credits {
   font-size: 13px;
 }
+#hidden-audio {
+  display: none;
+}
+
+.map-container {
+  position: relative;
+  width: 600px; /* Sesuaikan dengan lebar iframe */
+  height: 450px; /* Sesuaikan dengan tinggi iframe */
+  margin: 0 auto; /* Untuk memposisikan ke tengah secara horizontal */
+}
+
+.map-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
