@@ -8,22 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* =============================================
-       NEUBRUTALISM DESIGN SYSTEM
-       Palette:
-         --yellow: #FFE135  (hero bg)
-         --mint:   #B5F5B5  (about bg)
-         --pink:   #FFB3C6  (card accent)
-         --blue:   #A8D8EA  (card accent)
-         --orange: #FFBA49  (card accent)
-         --white:  #FFFDF5
-         --black:  #0D0D0D
-       Fonts:
-         Display  — Syne 800
-         Body     — Space Grotesk 400/700
-         Mono     — Courier Prime 700
-    ============================================= */
-
     :root {
       --yellow: #FFE135;
       --mint:   #B5F5B5;
@@ -34,53 +18,67 @@
       --white:  #FFFDF5;
       --black:  #0D0D0D;
       --border: 3px solid #0D0D0D;
-      --shadow: 6px 6px 0px #0D0D0D;
-      --shadow-lg: 10px 10px 0px #0D0D0D;
-      --radius: 0px;
+      --shadow: 5px 5px 0px #0D0D0D;
+      --shadow-lg: 8px 8px 0px #0D0D0D;
+      --nav-h: 56px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
       font-family: 'Space Grotesk', sans-serif;
       background: var(--white);
       color: var(--black);
       overflow-x: hidden;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Crect x='2' y='2' width='16' height='16' fill='%23FFE135' stroke='%230D0D0D' stroke-width='2'/%3E%3C/svg%3E") 10 10, auto;
+      line-height: 1.5;
     }
 
-    /* ---- NAV ---- */
+    img { max-width: 100%; display: block; }
+
+    /* ===================== SCROLL PROGRESS ===================== */
+    .scroll-progress {
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      height: 4px;
+      background: var(--yellow);
+      border-right: 2px solid var(--black);
+      z-index: 200;
+      width: 0%;
+    }
+
+    /* ===================== NAV ===================== */
     nav {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 150;
       background: var(--black);
       border-bottom: var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 40px;
-      height: 60px;
+      height: var(--nav-h);
     }
 
     .nav-logo {
       font-family: 'Syne', sans-serif;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       color: var(--yellow);
       letter-spacing: -1px;
+      font-weight: 800;
     }
 
-    .nav-links { display: flex; gap: 8px; }
+    .nav-links { display: flex; gap: 4px; }
 
     .nav-links a {
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--white);
       text-decoration: none;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border: 2px solid transparent;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -93,233 +91,298 @@
       border-color: var(--yellow);
     }
 
-    /* ---- HERO ---- */
+    /* Hamburger button */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+      z-index: 160;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      background: var(--yellow);
+      transition: all 0.25s ease;
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--black);
+      border-bottom: var(--border);
+      z-index: 140;
+      flex-direction: column;
+      transform: translateY(-110%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .mobile-menu.open { transform: translateY(0); }
+
+    .mobile-menu a {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--white);
+      text-decoration: none;
+      padding: 18px 24px;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:active { background: rgba(255,225,53,0.12); color: var(--yellow); }
+
+    .menu-num {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      opacity: 0.4;
+      min-width: 28px;
+    }
+
+    /* Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 130;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .overlay.show { opacity: 1; }
+
+    /* ===================== HERO ===================== */
     #hero {
       background: var(--yellow);
       border-bottom: var(--border);
-      min-height: calc(100vh - 60px);
       display: grid;
       grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
+      min-height: calc(100vh - var(--nav-h));
     }
 
     .hero-left {
-      padding: 80px 60px 80px 60px;
+      padding: 72px 52px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 32px;
+      gap: 28px;
       border-right: var(--border);
     }
 
     .hero-tag {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 2px;
       background: var(--black);
       color: var(--yellow);
-      padding: 6px 16px;
+      padding: 7px 14px;
       width: fit-content;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 9px; height: 9px;
+      background: #22C55E;
+      border-radius: 50%;
+      border: 2px solid var(--black);
+      margin-right: 8px;
+      flex-shrink: 0;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
     }
 
     .hero-title {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(3.5rem, 7vw, 6.5rem);
-      line-height: 0.92;
+      font-size: clamp(2.8rem, 6vw, 6rem);
+      line-height: 0.9;
       letter-spacing: -3px;
       color: var(--black);
     }
 
-    .hero-title span {
+    .hero-title .outline {
       display: block;
       -webkit-text-stroke: 3px var(--black);
       color: transparent;
     }
 
     .hero-desc {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      max-width: 440px;
+      font-size: clamp(0.88rem, 1.5vw, 1.05rem);
+      line-height: 1.65;
+      max-width: 420px;
       color: var(--black);
       border-left: 5px solid var(--black);
-      padding-left: 16px;
+      padding-left: 14px;
     }
 
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
 
     .btn-brutal {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      padding: 16px 32px;
+      padding: 14px 28px;
       border: var(--border);
       box-shadow: var(--shadow);
       text-decoration: none;
       cursor: pointer;
       transition: transform 0.1s, box-shadow 0.1s;
       display: inline-block;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .btn-brutal:active {
-      transform: translate(6px, 6px);
-      box-shadow: 0 0 0 var(--black);
-    }
+    .btn-brutal:active { transform: translate(5px,5px) !important; box-shadow: 0 0 0 var(--black) !important; }
 
-    .btn-primary { background: var(--black); color: var(--yellow); }
-    .btn-primary:hover { background: #222; transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--black); }
+    .btn-primary  { background: var(--black); color: var(--yellow); }
+    .btn-primary:hover  { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--black); }
     .btn-secondary { background: var(--white); color: var(--black); }
-    .btn-secondary:hover { background: var(--pink); transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--black); }
+    .btn-secondary:hover { background: var(--pink); transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--black); }
 
     .hero-right {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 60px;
+      padding: 52px 40px;
+      overflow: hidden;
+    }
+
+    .hero-deco {
+      position: absolute;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(5rem, 12vw, 10rem);
+      font-weight: 800;
+      opacity: 0.06;
+      color: var(--black);
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -8px;
+      right: -20px;
+      bottom: 20px;
     }
 
     .hero-card {
       background: var(--white);
       border: var(--border);
       box-shadow: var(--shadow-lg);
-      padding: 32px;
+      padding: 28px;
       width: 100%;
-      max-width: 380px;
+      max-width: 360px;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-card-label {
       font-family: 'Courier Prime', monospace;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 2px;
-      margin-bottom: 20px;
-      opacity: 0.6;
+      margin-bottom: 18px;
+      opacity: 0.55;
     }
 
-    .status-dot {
-      display: inline-block;
-      width: 10px; height: 10px;
-      background: #22C55E;
-      border-radius: 50%;
-      border: 2px solid var(--black);
-      margin-right: 8px;
-      animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-    }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; }
 
     .stat-item {
-      padding: 20px 16px;
+      padding: 16px 14px;
       border: 1.5px solid var(--black);
       margin: -0.75px;
     }
 
     .stat-num {
       font-family: 'Syne', sans-serif;
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 800;
       line-height: 1;
     }
 
-    .stat-label {
-      font-size: 0.75rem;
-      opacity: 0.7;
-      margin-top: 4px;
-    }
+    .stat-label { font-size: 0.68rem; opacity: 0.6; margin-top: 3px; }
 
-    .hero-deco {
-      position: absolute;
-      font-family: 'Syne', sans-serif;
-      font-size: 10rem;
-      font-weight: 800;
-      opacity: 0.06;
-      color: var(--black);
-      pointer-events: none;
-      user-select: none;
-      letter-spacing: -10px;
-    }
-
-    /* ---- MARQUEE ---- */
+    /* ===================== MARQUEE ===================== */
     .marquee-wrapper {
       background: var(--black);
-      border-top: var(--border);
       border-bottom: var(--border);
-      padding: 18px 0;
+      padding: 16px 0;
       overflow: hidden;
-      position: relative;
     }
 
     .marquee-track {
       display: flex;
-      gap: 0;
-      animation: marquee 20s linear infinite;
+      animation: marquee 22s linear infinite;
       width: max-content;
     }
 
     .marquee-item {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1rem;
       text-transform: uppercase;
       letter-spacing: 2px;
       color: var(--yellow);
       white-space: nowrap;
-      padding: 0 40px;
+      padding: 0 32px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
-    .marquee-item::after {
-      content: '✦';
-      color: var(--pink);
-      font-size: 0.8rem;
-    }
+    .marquee-item::after { content: '✦'; color: var(--pink); font-size: 0.65rem; }
 
     @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
 
-    /* ---- SECTIONS SHARED ---- */
+    /* ===================== SHARED SECTION ===================== */
     section { border-bottom: var(--border); }
 
     .section-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 80px 40px;
+      padding: 72px 40px;
     }
 
     .section-label {
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 3px;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 48px;
+      margin-bottom: 44px;
     }
 
     .section-label::after {
@@ -327,15 +390,16 @@
       flex: 1;
       height: 3px;
       background: var(--black);
+      min-width: 20px;
     }
 
-    /* ---- ABOUT ---- */
+    /* ===================== ABOUT ===================== */
     #about { background: var(--mint); }
 
     .about-grid {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
-      gap: 40px;
+      gap: 36px;
       align-items: start;
     }
 
@@ -343,135 +407,118 @@
       background: var(--white);
       border: var(--border);
       box-shadow: var(--shadow-lg);
-      padding: 40px;
+      padding: 36px;
     }
 
     .about-heading {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       line-height: 1.05;
       letter-spacing: -2px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .about-heading em {
       font-style: normal;
       background: var(--yellow);
-      padding: 0 6px;
+      padding: 0 5px;
       border: 2px solid var(--black);
     }
 
-    .about-body {
-      font-size: 1rem;
-      line-height: 1.75;
-      color: #333;
-    }
+    .about-body { font-size: 0.95rem; line-height: 1.75; color: #333; }
+    .about-body p + p { margin-top: 14px; }
 
-    .about-body p + p { margin-top: 16px; }
-
-    .about-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+    .about-sidebar { display: flex; flex-direction: column; gap: 16px; }
 
     .info-block {
       background: var(--white);
       border: var(--border);
       box-shadow: var(--shadow);
-      padding: 20px 24px;
+      padding: 16px 20px;
     }
 
     .info-block-label {
       font-family: 'Courier Prime', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
       letter-spacing: 2px;
       opacity: 0.5;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .info-block-value {
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      word-break: break-word;
     }
 
     .skills-box {
       background: var(--black);
       border: var(--border);
       box-shadow: var(--shadow);
-      padding: 24px;
+      padding: 20px;
     }
 
     .skills-box-title {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
       color: var(--yellow);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    .skill-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 7px; }
 
     .pill {
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.75rem;
-      padding: 6px 14px;
+      font-size: 0.7rem;
+      padding: 5px 12px;
       border: 2px solid;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
     }
 
-    .pill-y  { background: var(--yellow);  color: var(--black); border-color: var(--yellow); }
-    .pill-p  { background: var(--pink);    color: var(--black); border-color: var(--pink); }
-    .pill-b  { background: var(--blue);    color: var(--black); border-color: var(--blue); }
-    .pill-m  { background: var(--mint);    color: var(--black); border-color: var(--mint); }
-    .pill-o  { background: var(--orange);  color: var(--black); border-color: var(--orange); }
-    .pill-l  { background: var(--lav);     color: var(--black); border-color: var(--lav); }
+    .pill-y { background: var(--yellow);  color: var(--black); border-color: var(--yellow); }
+    .pill-p { background: var(--pink);    color: var(--black); border-color: var(--pink); }
+    .pill-b { background: var(--blue);    color: var(--black); border-color: var(--blue); }
+    .pill-m { background: var(--mint);    color: var(--black); border-color: var(--mint); }
+    .pill-o { background: var(--orange);  color: var(--black); border-color: var(--orange); }
+    .pill-l { background: var(--lav);     color: var(--black); border-color: var(--lav); }
 
-    /* ---- PROJECTS ---- */
+    /* ===================== PROJECTS ===================== */
     #projects { background: var(--white); }
 
     .projects-heading {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
       letter-spacing: -3px;
-      line-height: 1;
-      margin-bottom: 48px;
+      line-height: 0.95;
+      margin-bottom: 40px;
     }
 
     .bento-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto;
-      gap: 0;
       border: var(--border);
     }
 
     .bento-card {
       border: var(--border);
       margin: -1.5px;
-      padding: 32px;
+      padding: 28px;
       position: relative;
       overflow: hidden;
       transition: transform 0.15s, box-shadow 0.15s;
     }
 
-    .bento-card:hover {
-      transform: translate(-4px, -4px);
-      box-shadow: var(--shadow-lg);
-      z-index: 2;
-    }
+    .bento-card:hover { transform: translate(-4px,-4px); box-shadow: var(--shadow-lg); z-index: 2; }
 
     .c1 { grid-column: span 7; background: var(--yellow); }
     .c2 { grid-column: span 5; background: var(--pink); }
@@ -484,11 +531,11 @@
     .card-tag {
       font-family: 'Courier Prime', monospace;
       font-weight: 700;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       opacity: 0.6;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .c7 .card-tag { color: var(--yellow); opacity: 0.8; }
@@ -496,35 +543,30 @@
     .card-title {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 1.6rem;
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
       line-height: 1.1;
       letter-spacing: -1px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .c7 .card-title { color: var(--white); }
 
     .card-desc {
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       line-height: 1.6;
       color: #333;
-      max-width: 380px;
+      max-width: 360px;
     }
 
-    .c7 .card-desc { color: rgba(255,255,255,0.75); }
+    .c7 .card-desc { color: rgba(255,255,255,0.72); }
 
-    .card-tech {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 16px;
-    }
+    .card-tech { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
 
     .tech-tag {
       font-family: 'Courier Prime', monospace;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 3px 9px;
       background: var(--black);
       color: var(--yellow);
       text-transform: uppercase;
@@ -534,13 +576,12 @@
 
     .card-num {
       position: absolute;
-      bottom: 20px;
-      right: 24px;
+      bottom: 16px; right: 20px;
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 5rem;
+      font-size: 4.5rem;
       line-height: 1;
-      opacity: 0.08;
+      opacity: 0.07;
       color: var(--black);
       letter-spacing: -4px;
       pointer-events: none;
@@ -551,28 +592,28 @@
     .card-link {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 20px;
+      gap: 6px;
+      margin-top: 16px;
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--black);
       text-decoration: none;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border: 2px solid var(--black);
       background: var(--white);
       box-shadow: 3px 3px 0 var(--black);
       transition: transform 0.1s, box-shadow 0.1s;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .card-link:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--black); }
-    .card-link:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--black); }
-
+    .card-link:hover  { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--black); }
+    .card-link:active { transform: translate(3px,3px);   box-shadow: 0 0 0; }
     .c7 .card-link { background: var(--yellow); }
 
-    /* ---- CONTACT ---- */
+    /* ===================== CONTACT ===================== */
     #contact { background: var(--black); }
     #contact .section-label { color: var(--yellow); }
     #contact .section-label::after { background: var(--yellow); }
@@ -580,18 +621,18 @@
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      gap: 52px;
       align-items: start;
     }
 
     .contact-heading {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
-      line-height: 0.95;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 0.92;
       letter-spacing: -3px;
       color: var(--white);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .contact-heading span {
@@ -600,112 +641,101 @@
       display: block;
     }
 
-    .contact-info-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .contact-info-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
 
     .contact-info-list li {
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-size: 0.95rem;
+      gap: 14px;
+      font-size: 0.9rem;
     }
 
-    .contact-info-list .icon-box {
-      width: 44px; height: 44px;
+    .icon-box {
+      width: 42px; height: 42px;
       background: var(--yellow);
       border: 2px solid var(--yellow);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
-    .contact-info-list a { color: var(--white); text-decoration: none; }
+    .contact-info-list a { color: var(--white); text-decoration: none; word-break: break-all; }
     .contact-info-list a:hover { color: var(--yellow); }
+    .contact-info-list .plain { color: var(--white); }
 
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
 
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
     .brutal-input {
       width: 100%;
       background: transparent;
-      border: 3px solid var(--white);
+      border: 3px solid rgba(255,255,255,0.4);
       color: var(--white);
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 0.95rem;
-      padding: 14px 16px;
+      font-size: 0.9rem;
+      padding: 13px 15px;
       outline: none;
       transition: border-color 0.15s, background 0.15s;
+      -webkit-appearance: none;
+      border-radius: 0;
     }
 
     .brutal-input::placeholder { color: rgba(255,255,255,0.3); }
+    .brutal-input:focus { border-color: var(--yellow); background: rgba(255,225,53,0.04); }
 
-    .brutal-input:focus {
-      border-color: var(--yellow);
-      background: rgba(255,225,53,0.05);
-    }
-
-    textarea.brutal-input { resize: vertical; min-height: 140px; }
+    textarea.brutal-input { resize: vertical; min-height: 130px; }
 
     .btn-submit {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1rem;
       text-transform: uppercase;
       letter-spacing: 2px;
       background: var(--yellow);
       color: var(--black);
       border: 3px solid var(--yellow);
-      box-shadow: 6px 6px 0 var(--yellow);
-      padding: 18px 40px;
+      box-shadow: 5px 5px 0 rgba(255,225,53,0.5);
+      padding: 16px 36px;
       cursor: pointer;
-      transition: transform 0.1s, box-shadow 0.1s;
+      transition: all 0.1s;
       width: 100%;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .btn-submit:hover { background: var(--mint); border-color: var(--mint); box-shadow: 6px 6px 0 var(--mint); }
-    .btn-submit:active { transform: translate(6px, 6px); box-shadow: 0 0 0; }
+    .btn-submit:hover  { background: var(--mint); border-color: var(--mint); }
+    .btn-submit:active { transform: translate(5px,5px); box-shadow: 0 0; }
 
-    /* ---- FOOTER ---- */
+    #form-msg { color: var(--mint); font-family: 'Courier Prime', monospace; font-size: 0.85rem; display: none; }
+
+    /* ===================== FOOTER ===================== */
     footer {
       background: var(--yellow);
       border-top: var(--border);
-      padding: 40px;
+      padding: 32px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 16px;
     }
 
     .footer-logo {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       letter-spacing: -1px;
       color: var(--black);
     }
 
-    .footer-copy {
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.75rem;
-      opacity: 0.6;
-    }
+    .footer-copy { font-family: 'Courier Prime', monospace; font-size: 0.72rem; opacity: 0.6; }
 
-    .footer-socials { display: flex; gap: 8px; }
+    .footer-socials { display: flex; gap: 8px; flex-wrap: wrap; }
 
     .social-btn {
-      width: 44px; height: 44px;
+      width: 42px; height: 42px;
       background: var(--black);
       color: var(--yellow);
       border: 2px solid var(--black);
@@ -713,46 +743,177 @@
       align-items: center;
       justify-content: center;
       text-decoration: none;
-      font-size: 1.1rem;
+      font-size: 0.88rem;
       font-weight: 700;
       font-family: 'Syne', sans-serif;
       box-shadow: 3px 3px 0 var(--black);
       transition: transform 0.1s, box-shadow 0.1s;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .social-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--black); }
+    .social-btn:hover  { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--black); }
+    .social-btn:active { transform: translate(3px,3px); box-shadow: 0 0; }
 
-    /* ---- SCROLL INDICATOR ---- */
-    .scroll-progress {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      height: 4px;
-      background: var(--yellow);
-      z-index: 200;
-      transition: width 0.1s;
-    }
+    /* =============================================
+       RESPONSIVE BREAKPOINTS
+       > 1024   Desktop   (defaults above)
+       768-1024 Tablet
+       480-767  Large phone
+       < 480    Small phone
+       < 360    Very small (Fold etc.)
+    ============================================= */
 
-    /* ---- RESPONSIVE ---- */
-    @media (max-width: 900px) {
-      #hero { grid-template-columns: 1fr; }
-      .hero-right { border-top: var(--border); padding: 40px; }
-      .about-grid { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .c1,.c2,.c3,.c4,.c5,.c6,.c7 { grid-column: span 12; }
-      .form-row { grid-template-columns: 1fr; }
+    /* ---- TABLET ---- */
+    @media (max-width: 1024px) {
+      nav { padding: 0 24px; }
       .nav-links { display: none; }
-      .hero-left { padding: 60px 32px; }
-      footer { flex-direction: column; text-align: center; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: flex; }
+
+      .section-inner { padding: 60px 32px; }
+
+      #hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 56px 40px; border-right: none; border-bottom: var(--border); gap: 24px; }
+      .hero-right { padding: 48px 40px; }
+      .hero-card { max-width: 100%; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 28px; }
+
+      /* Tablet bento: 2 equal cols */
+      .bento-grid { grid-template-columns: 1fr 1fr; }
+      .c1,.c2,.c3,.c4,.c5,.c6,.c7 { grid-column: span 1; }
+      .c1 { grid-column: span 2; }
+      .c7 { grid-column: span 2; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      footer { padding: 28px 32px; }
+    }
+
+    /* ---- LARGE PHONE ---- */
+    @media (max-width: 767px) {
+      :root {
+        --nav-h: 52px;
+        --shadow: 4px 4px 0px #0D0D0D;
+        --shadow-lg: 6px 6px 0px #0D0D0D;
+        --border: 2.5px solid #0D0D0D;
+      }
+
+      nav { padding: 0 20px; }
+      .section-inner { padding: 52px 20px; }
+      .section-label { margin-bottom: 32px; font-size: 0.7rem; }
+
+      .hero-left { padding: 44px 20px; gap: 20px; }
+      .hero-title { letter-spacing: -2px; }
+      .hero-title .outline { -webkit-text-stroke: 2.5px var(--black); }
+      .hero-desc { font-size: 0.9rem; }
+      .btn-brutal { font-size: 0.85rem; padding: 13px 22px; }
+      .hero-right { padding: 36px 20px; }
+
+      .about-text-box { padding: 24px; }
+      .about-heading { letter-spacing: -1.5px; }
+      .about-body { font-size: 0.9rem; }
+      .info-block { padding: 14px 16px; }
+
+      /* Phone bento: single column stack */
+      .bento-grid {
+        display: flex;
+        flex-direction: column;
+        border: none;
+        gap: 0;
+      }
+      .bento-card {
+        margin: 0;
+        border: var(--border);
+        margin-top: -2.5px;
+      }
+      .bento-card:first-child { margin-top: 0; }
+      .c1,.c2,.c3,.c4,.c5,.c6,.c7 { grid-column: span 1; }
+      /* Disable hover lift on touch layout */
+      .bento-card:hover { transform: none; box-shadow: none; z-index: auto; }
+
+      .card-title { font-size: 1.3rem; }
+      .card-num { font-size: 3.5rem; }
+
+      .contact-heading { letter-spacing: -2px; }
+      .form-row { grid-template-columns: 1fr; }
+
+      footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; gap: 14px; }
+      .footer-logo { font-size: 1.4rem; }
+    }
+
+    /* ---- SMALL PHONE ---- */
+    @media (max-width: 479px) {
+      :root {
+        --nav-h: 50px;
+        --shadow: 3px 3px 0px #0D0D0D;
+        --shadow-lg: 5px 5px 0px #0D0D0D;
+        --border: 2.5px solid #0D0D0D;
+      }
+
+      nav { padding: 0 16px; }
+      .nav-logo { font-size: 1.1rem; }
+
+      .section-inner { padding: 44px 16px; }
+
+      .hero-left { padding: 40px 16px; gap: 18px; }
+      .hero-tag { font-size: 0.68rem; padding: 6px 12px; }
+      .hero-cta { gap: 10px; }
+      /* Full-width CTA buttons on tiny screens */
+      .btn-brutal { font-size: 0.82rem; padding: 14px 18px; width: 100%; text-align: center; display: block; }
+      .hero-right { padding: 28px 16px; }
+
+      .stat-num { font-size: 1.5rem; }
+      .stat-item { padding: 13px 10px; }
+      .stat-label { font-size: 0.62rem; }
+
+      .about-text-box { padding: 20px 16px; }
+      .about-heading { font-size: 1.7rem; }
+      .about-body { font-size: 0.88rem; }
+      .skills-box { padding: 16px; }
+      .pill { font-size: 0.65rem; padding: 4px 10px; }
+
+      .projects-heading { letter-spacing: -2px; }
+      .bento-card { padding: 22px 16px; }
+      .card-title { font-size: 1.2rem; }
+      .card-desc { font-size: 0.82rem; }
+
+      .contact-heading { font-size: 2rem; letter-spacing: -2px; }
+      .icon-box { width: 38px; height: 38px; font-size: 0.9rem; }
+      .contact-info-list li { font-size: 0.82rem; gap: 10px; }
+      .brutal-input { font-size: 0.85rem; padding: 11px 13px; }
+      .btn-submit { font-size: 0.9rem; padding: 14px; letter-spacing: 1px; }
+
+      footer { padding: 20px 16px; }
+      .social-btn { width: 38px; height: 38px; font-size: 0.8rem; }
+
+      .mobile-menu a { font-size: 1.3rem; padding: 16px 20px; }
+    }
+
+    /* ---- GALAXY FOLD / VERY SMALL ---- */
+    @media (max-width: 359px) {
+      .hero-title { font-size: 2.5rem; letter-spacing: -1.5px; }
+      .hero-title .outline { -webkit-text-stroke: 2px var(--black); }
+      .about-heading { font-size: 1.5rem; }
+      .contact-heading { font-size: 1.75rem; }
+      .footer-logo { font-size: 1.2rem; }
+      .mobile-menu a { font-size: 1.15rem; }
+    }
+
+    /* ---- TOUCH DEVICE: kill stuck hover states ---- */
+    @media (hover: none) {
+      .btn-primary:hover, .btn-secondary:hover { transform: none; box-shadow: var(--shadow); }
+      .card-link:hover  { transform: none; box-shadow: 3px 3px 0 var(--black); }
+      .social-btn:hover { transform: none; box-shadow: 3px 3px 0 var(--black); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Scroll Progress -->
   <div class="scroll-progress" id="scrollBar"></div>
+  <div class="overlay" id="overlay"></div>
 
-  <!-- NAV -->
+  <!-- ===== NAV ===== -->
   <nav>
     <div class="nav-logo">DZ/FK</div>
     <div class="nav-links">
@@ -760,87 +921,68 @@
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
-  <!-- HERO -->
+  <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+    <a href="#about"    class="menu-link"><span class="menu-num">01</span>About</a>
+    <a href="#projects" class="menu-link"><span class="menu-num">02</span>Projects</a>
+    <a href="#contact"  class="menu-link"><span class="menu-num">03</span>Contact</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
   <section id="hero">
     <div class="hero-left">
       <div class="hero-tag">
         <span class="status-dot"></span>Available for Work
       </div>
-
       <h1 class="hero-title">
         IT ADMIN<br>
-        <span>&amp; WEB</span>
+        <span class="outline">&amp; WEB</span>
         DEV.
       </h1>
-
       <p class="hero-desc">
-        Membangun infrastruktur server, mengembangkan aplikasi web modern dengan Laravel & PHP, dan mengotomatisasi sistem IoT dengan ESP32. Based di Bogor, siap remote & on-site.
+        Membangun infrastruktur server, web app modern dengan Laravel &amp; PHP, dan sistem otomatisasi IoT berbasis ESP32. Based di Bogor — siap remote &amp; on-site.
       </p>
-
       <div class="hero-cta">
         <a href="#projects" class="btn-brutal btn-primary">Lihat Proyek →</a>
-        <a href="#contact" class="btn-brutal btn-secondary">Hubungi Saya</a>
+        <a href="#contact"  class="btn-brutal btn-secondary">Hubungi Saya</a>
       </div>
     </div>
-
     <div class="hero-right">
       <div class="hero-deco">DEV</div>
       <div class="hero-card">
         <div class="hero-card-label">— Quick Stats</div>
         <div class="stat-grid">
-          <div class="stat-item">
-            <div class="stat-num">3+</div>
-            <div class="stat-label">Years Coding</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">10+</div>
-            <div class="stat-label">Projects Done</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">AWS</div>
-            <div class="stat-label">Cloud Platform</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-num">IoT</div>
-            <div class="stat-label">ESP32 Systems</div>
-          </div>
+          <div class="stat-item"><div class="stat-num">3+</div><div class="stat-label">Years Coding</div></div>
+          <div class="stat-item"><div class="stat-num">10+</div><div class="stat-label">Projects Done</div></div>
+          <div class="stat-item"><div class="stat-num">AWS</div><div class="stat-label">Cloud Platform</div></div>
+          <div class="stat-item"><div class="stat-num">IoT</div><div class="stat-label">ESP32 Systems</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- MARQUEE -->
-  <div class="marquee-wrapper">
-    <div class="marquee-track" id="marqueeTrack">
-      <!-- Populated by JS -->
-    </div>
+  <!-- ===== MARQUEE ===== -->
+  <div class="marquee-wrapper" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
   </div>
 
-  <!-- ABOUT -->
+  <!-- ===== ABOUT ===== -->
   <section id="about">
     <div class="section-inner">
       <div class="section-label">02 — About Me</div>
       <div class="about-grid">
         <div class="about-text-box">
-          <h2 class="about-heading">
-            Saya <em>Dzaky</em><br>
-            Fatkhurrahman.
-          </h2>
+          <h2 class="about-heading">Saya <em>Dzaky</em><br>Fatkhurrahman.</h2>
           <div class="about-body">
-            <p>
-              IT Administrator & Web Developer yang berbasis di Bogor, Jawa Barat. Saya fokus membangun sistem web yang scalable menggunakan <strong>Laravel</strong>, <strong>PHP</strong>, dan <strong>WordPress</strong>, sekaligus mengelola infrastruktur server berbasis <strong>Ubuntu Server</strong> dan layanan cloud <strong>AWS</strong>.
-            </p>
-            <p>
-              Di luar pengembangan web, saya mengembangkan sistem otomatisasi berbasis <strong>IoT menggunakan ESP32</strong> — menghubungkan perangkat keras dengan perangkat lunak untuk solusi smart environment yang efisien dan real-time.
-            </p>
-            <p>
-              Mahasiswa aktif di <strong>Universitas Darma Persada</strong>, saya terus mengasah kemampuan lewat proyek nyata, bootcamp, dan eksplorasi teknologi terbaru.
-            </p>
+            <p>IT Administrator &amp; Web Developer berbasis di Bogor, Jawa Barat. Fokus membangun sistem web scalable menggunakan <strong>Laravel</strong>, <strong>PHP</strong>, dan <strong>WordPress</strong>, sekaligus mengelola infrastruktur server berbasis <strong>Ubuntu Server</strong> dan layanan cloud <strong>AWS</strong>.</p>
+            <p>Di luar web, saya mengembangkan sistem otomatisasi berbasis <strong>IoT dengan ESP32</strong> — menghubungkan hardware dan software untuk solusi smart environment yang efisien dan real-time.</p>
+            <p>Mahasiswa aktif di <strong>Universitas Darma Persada</strong>, terus mengasah kemampuan lewat proyek nyata, bootcamp, dan eksplorasi teknologi terbaru.</p>
           </div>
         </div>
-
         <div class="about-sidebar">
           <div class="info-block">
             <div class="info-block-label">Lokasi</div>
@@ -848,7 +990,7 @@
           </div>
           <div class="info-block">
             <div class="info-block-label">Status</div>
-            <div class="info-block-value">Open to Freelance & Full-time ✅</div>
+            <div class="info-block-value">Open to Freelance &amp; Full-time ✅</div>
           </div>
           <div class="info-block">
             <div class="info-block-label">Universitas</div>
@@ -880,204 +1022,188 @@
     </div>
   </section>
 
-  <!-- PROJECTS -->
+  <!-- ===== PROJECTS ===== -->
   <section id="projects">
     <div class="section-inner">
       <div class="section-label">03 — Projects</div>
       <h2 class="projects-heading">SELECTED<br>WORK.</h2>
-
       <div class="bento-grid">
-
-        <!-- Card 1: Big featured -->
         <div class="bento-card c1">
           <div class="card-tag">Web Application · Featured</div>
-          <h3 class="card-title">E-Courses<br>Learning Platform</h3>
-          <p class="card-desc">Platform e-learning berbasis web dengan sistem manajemen konten dinamis. Dibangun dengan HTML/CSS/JS, mendukung navigasi kursus yang intuitif dan struktur modul yang terorganisir.</p>
-          <div class="card-tech">
-            <span class="tech-tag">HTML</span>
-            <span class="tech-tag">CSS</span>
-            <span class="tech-tag">JavaScript</span>
-          </div>
-          <a href="https://fatkhurrahmann.github.io/ECOURSES/" target="_blank" class="card-link">View Live ↗</a>
+          <h3 class="card-title">E-Courses Learning Platform</h3>
+          <p class="card-desc">Platform e-learning berbasis web dengan manajemen konten dinamis, navigasi kursus intuitif, dan struktur modul terorganisir.</p>
+          <div class="card-tech"><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span></div>
+          <a href="https://fatkhurrahmann.github.io/ECOURSES/" target="_blank" rel="noopener" class="card-link">View Live ↗</a>
           <div class="card-num">01</div>
         </div>
-
-        <!-- Card 2 -->
         <div class="bento-card c2">
-          <div class="card-tag">UI/UX Design · Team Project</div>
+          <div class="card-tag">UI/UX Design · Team</div>
           <h3 class="card-title">Bimbel Online App</h3>
-          <p class="card-desc">Desain UI/UX lengkap untuk aplikasi bimbingan belajar online, mencakup user flow, wireframe, dan prototype interaktif di Figma beserta kalkulasi biaya operasional.</p>
-          <div class="card-tech">
-            <span class="tech-tag">Figma</span>
-            <span class="tech-tag">UI/UX</span>
-            <span class="tech-tag">Prototype</span>
-          </div>
+          <p class="card-desc">Desain UI/UX lengkap untuk aplikasi bimbel online — user flow, wireframe, prototype interaktif Figma beserta kalkulasi biaya.</p>
+          <div class="card-tech"><span class="tech-tag">Figma</span><span class="tech-tag">UI/UX</span><span class="tech-tag">Prototype</span></div>
           <div class="card-num">02</div>
         </div>
-
-        <!-- Card 3 -->
         <div class="bento-card c3">
           <div class="card-tag">IoT · ESP32</div>
-          <h3 class="card-title">Smart Room<br>Automation</h3>
-          <p class="card-desc">Sistem otomatisasi ruangan berbasis ESP32 dengan kontrol perangkat via WiFi. Integrasi sensor suhu, kelembaban, dan relay untuk efisiensi energi.</p>
-          <div class="card-tech">
-            <span class="tech-tag">ESP32</span>
-            <span class="tech-tag">C++</span>
-            <span class="tech-tag">MQTT</span>
-          </div>
+          <h3 class="card-title">Smart Room Automation</h3>
+          <p class="card-desc">Sistem otomatisasi ruangan berbasis ESP32 dengan kontrol perangkat via WiFi, sensor suhu &amp; kelembaban, dan relay cerdas.</p>
+          <div class="card-tech"><span class="tech-tag">ESP32</span><span class="tech-tag">C++</span><span class="tech-tag">MQTT</span></div>
           <div class="card-num">03</div>
         </div>
-
-        <!-- Card 4 -->
         <div class="bento-card c4">
           <div class="card-tag">Database · Backend</div>
           <h3 class="card-title">Library DB System</h3>
-          <p class="card-desc">Sistem database perpustakaan kampus yang dibangun dengan MySQL via DBeaver, mencakup manajemen buku, anggota, dan peminjaman.</p>
-          <div class="card-tech">
-            <span class="tech-tag">MySQL</span>
-            <span class="tech-tag">DBeaver</span>
-          </div>
+          <p class="card-desc">Sistem database perpustakaan kampus dengan MySQL via DBeaver — manajemen buku, anggota, dan peminjaman.</p>
+          <div class="card-tech"><span class="tech-tag">MySQL</span><span class="tech-tag">DBeaver</span></div>
           <div class="card-num">04</div>
         </div>
-
-        <!-- Card 5 -->
         <div class="bento-card c5">
           <div class="card-tag">3D / Game Dev</div>
           <h3 class="card-title">Roblox 3D Game</h3>
-          <p class="card-desc">Pengembangan game di Roblox dengan aset 3D custom yang dibuat di Blender.</p>
-          <div class="card-tech">
-            <span class="tech-tag">Blender</span>
-            <span class="tech-tag">Roblox</span>
-          </div>
+          <p class="card-desc">Game di Roblox dengan aset 3D custom dari Blender.</p>
+          <div class="card-tech"><span class="tech-tag">Blender</span><span class="tech-tag">Roblox</span></div>
           <div class="card-num">05</div>
         </div>
-
-        <!-- Card 6 -->
         <div class="bento-card c6">
           <div class="card-tag">Web · Static Site</div>
-          <h3 class="card-title">Visit Japan<br>Travel Website</h3>
-          <p class="card-desc">Website wisata Jepang yang responsif dengan galeri destinasi, informasi perjalanan, dan desain visual yang memikat.</p>
-          <div class="card-tech">
-            <span class="tech-tag">HTML</span>
-            <span class="tech-tag">CSS</span>
-            <span class="tech-tag">JavaScript</span>
-          </div>
-          <a href="https://fatkhurrahmann.github.io/Visit_Japan/" target="_blank" class="card-link">View Live ↗</a>
+          <h3 class="card-title">Visit Japan Travel Website</h3>
+          <p class="card-desc">Website wisata Jepang responsif dengan galeri destinasi dan informasi perjalanan yang memikat.</p>
+          <div class="card-tech"><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span></div>
+          <a href="https://fatkhurrahmann.github.io/Visit_Japan/" target="_blank" rel="noopener" class="card-link">View Live ↗</a>
           <div class="card-num">06</div>
         </div>
-
-        <!-- Card 7: Dark -->
         <div class="bento-card c7">
           <div class="card-tag">Infrastructure · Cloud</div>
-          <h3 class="card-title">AWS Server<br>Management</h3>
-          <p class="card-desc">Pengelolaan infrastruktur cloud menggunakan AWS EC2, S3, dan Ubuntu Server. Setup environment production, konfigurasi keamanan, dan monitoring sistem untuk deployment aplikasi web skala menengah.</p>
-          <div class="card-tech">
-            <span class="tech-tag">AWS EC2</span>
-            <span class="tech-tag">Ubuntu</span>
-            <span class="tech-tag">Nginx</span>
-            <span class="tech-tag">SSL</span>
-          </div>
+          <h3 class="card-title">AWS Server Management</h3>
+          <p class="card-desc">Pengelolaan infrastruktur cloud dengan AWS EC2 &amp; S3 di atas Ubuntu Server — setup production, konfigurasi keamanan, dan monitoring sistem untuk deployment web skala menengah.</p>
+          <div class="card-tech"><span class="tech-tag">AWS EC2</span><span class="tech-tag">Ubuntu</span><span class="tech-tag">Nginx</span><span class="tech-tag">SSL</span></div>
           <a href="#contact" class="card-link">Diskusi Proyek ↗</a>
           <div class="card-num">07</div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- ===== CONTACT ===== -->
   <section id="contact">
     <div class="section-inner">
       <div class="section-label">04 — Contact</div>
       <div class="contact-grid">
         <div>
-          <h2 class="contact-heading">
-            ADA<br>PROYEK<br>
-            <span>BARENG?</span>
-          </h2>
+          <h2 class="contact-heading">ADA<br>PROYEK<br><span>BARENG?</span></h2>
           <ul class="contact-info-list">
-            <li>
-              <div class="icon-box">📍</div>
-              <span style="color:#fff">Cileungsi, Bogor, Jawa Barat 16820</span>
-            </li>
-            <li>
-              <div class="icon-box">✉️</div>
-              <a href="mailto:dzakyfathurr@gmail.com">dzakyfathurr@gmail.com</a>
-            </li>
-            <li>
-              <div class="icon-box">📱</div>
-              <a href="https://wa.me/081568380473">+62 815 6838 0473</a>
-            </li>
-            <li>
-              <div class="icon-box">💼</div>
-              <a href="https://www.linkedin.com/in/fathur-rahman-1803241b4/" target="_blank">LinkedIn — Fathur Rahman</a>
-            </li>
+            <li><div class="icon-box">📍</div><span class="plain">Cileungsi, Bogor, Jawa Barat 16820</span></li>
+            <li><div class="icon-box">✉️</div><a href="mailto:dzakyfathurr@gmail.com">dzakyfathurr@gmail.com</a></li>
+            <li><div class="icon-box">📱</div><a href="https://wa.me/6281568380473">+62 815 6838 0473</a></li>
+            <li><div class="icon-box">💼</div><a href="https://www.linkedin.com/in/fathur-rahman-1803241b4/" target="_blank" rel="noopener">LinkedIn — Fathur Rahman</a></li>
           </ul>
         </div>
-
-        <form class="contact-form" onsubmit="handleSubmit(event)">
+        <form class="contact-form" onsubmit="handleSubmit(event)" novalidate>
           <div class="form-row">
-            <input type="text" class="brutal-input" placeholder="Nama Kamu" required>
-            <input type="email" class="brutal-input" placeholder="Email Kamu" required>
+            <input type="text"  class="brutal-input" placeholder="Nama Kamu"  required autocomplete="name">
+            <input type="email" class="brutal-input" placeholder="Email Kamu" required autocomplete="email">
           </div>
           <input type="text" class="brutal-input" placeholder="Subject / Topik">
           <textarea class="brutal-input" placeholder="Ceritakan proyekmu..." required></textarea>
           <button type="submit" class="btn-submit">Kirim Pesan ✦</button>
-          <div id="form-msg" style="color:var(--mint);font-family:'Courier Prime',monospace;font-size:0.85rem;display:none;">
-            ✓ Pesan terkirim! Saya akan balas secepatnya.
-          </div>
+          <div id="form-msg">✓ Pesan terkirim! Saya akan balas secepatnya.</div>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ===== FOOTER ===== -->
   <footer>
-    <div class="footer-logo">DZAKY.F</div>
-    <div class="footer-copy">© 2026 Dzaky Fatkhurrahman. All rights reserved.</div>
+    <div class="footer-logo">DZAKY.FK</div>
+    <div class="footer-copy">© 2025 Dzaky Fatkhurrahman. All Rights Reserved.</div>
     <div class="footer-socials">
-      <a href="https://twitter.com/dzakyfathurr" target="_blank" class="social-btn" title="Twitter">𝕏</a>
-      <a href="https://www.instagram.com/f.dzaaky/" target="_blank" class="social-btn" title="Instagram">IG</a>
-      <a href="https://www.linkedin.com/in/fathur-rahman-1803241b4/" target="_blank" class="social-btn" title="LinkedIn">IN</a>
-      <a href="https://github.com/fatkhurrahmann" target="_blank" class="social-btn" title="GitHub">GH</a>
+      <a href="https://twitter.com/dzakyfathurr"   target="_blank" rel="noopener" class="social-btn" aria-label="Twitter">𝕏</a>
+      <a href="https://www.instagram.com/f.dzaaky/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">IG</a>
+      <a href="https://www.linkedin.com/in/fathur-rahman-1803241b4/" target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn">IN</a>
+      <a href="https://github.com/fatkhurrahmann" target="_blank" rel="noopener" class="social-btn" aria-label="GitHub">GH</a>
     </div>
   </footer>
 
   <script>
-    // Marquee
+    /* ---- Hamburger ---- */
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const overlay    = document.getElementById('overlay');
+
+    function openMenu() {
+      hamburger.classList.add('open');
+      mobileMenu.classList.add('open');
+      overlay.style.display = 'block';
+      requestAnimationFrame(() => overlay.classList.add('show'));
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      overlay.classList.remove('show');
+      setTimeout(() => { overlay.style.display = 'none'; }, 260);
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', () => hamburger.classList.contains('open') ? closeMenu() : openMenu());
+    overlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('.menu-link').forEach(a => a.addEventListener('click', () => { closeMenu(); }));
+
+    /* ---- Marquee ---- */
     const stack = ['Laravel','PHP','WordPress','MySQL','AWS','Ubuntu Server','ESP32','Python','C++','JavaScript','HTML/CSS','Figma','Blender','Roblox','IoT','Bootstrap'];
     const track = document.getElementById('marqueeTrack');
-    const items = [...stack, ...stack].map(s => {
+    const makeItems = () => stack.map(s => {
       const el = document.createElement('span');
       el.className = 'marquee-item';
       el.textContent = s;
       return el;
     });
-    items.forEach(el => track.appendChild(el));
-    // Duplicate for seamless loop
-    items.forEach(el => track.appendChild(el.cloneNode(true)));
+    [...makeItems(), ...makeItems()].forEach(el => track.appendChild(el));
 
-    // Scroll progress bar
+    /* ---- Scroll progress ---- */
+    const bar = document.getElementById('scrollBar');
     window.addEventListener('scroll', () => {
       const total = document.body.scrollHeight - window.innerHeight;
-      const pct = (window.scrollY / total) * 100;
-      document.getElementById('scrollBar').style.width = pct + '%';
-    });
+      bar.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
+    }, { passive: true });
 
-    // Contact form
+    /* ---- Contact form ---- */
     function handleSubmit(e) {
       e.preventDefault();
       const msg = document.getElementById('form-msg');
       msg.style.display = 'block';
       e.target.reset();
-      setTimeout(() => msg.style.display = 'none', 5000);
+      setTimeout(() => { msg.style.display = 'none'; }, 5000);
     }
 
-    // Btn press feedback
+    /* ---- Tactile button feedback ---- */
     document.querySelectorAll('.btn-brutal, .btn-submit').forEach(btn => {
-      btn.addEventListener('mousedown', () => btn.style.filter = 'brightness(0.9)');
-      btn.addEventListener('mouseup',   () => btn.style.filter = '');
+      ['mousedown','touchstart'].forEach(ev =>
+        btn.addEventListener(ev, () => btn.style.filter = 'brightness(0.88)', { passive: true })
+      );
+      ['mouseup','mouseleave','touchend'].forEach(ev =>
+        btn.addEventListener(ev, () => btn.style.filter = '')
+      );
     });
+
+    /* ---- Active nav highlight on scroll ---- */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => { a.style.color = ''; a.style.background = ''; });
+          const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+          if (active) { active.style.color = 'var(--black)'; active.style.background = 'var(--yellow)'; }
+        }
+      });
+    }, { threshold: 0.45 });
+
+    sections.forEach(s => sectionObserver.observe(s));
   </script>
 </body>
 </html>
