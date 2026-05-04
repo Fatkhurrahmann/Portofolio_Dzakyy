@@ -1170,13 +1170,64 @@
       bar.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
     }, { passive: true });
 
-    /* ---- Contact form ---- */
-    function handleSubmit(e) {
+    /* ---- Contact form → Telegram ---- */
+    const TG_TOKEN   = '8656234616:AAEZA6k5ifUwjg_8vgMhl0CJRc7c-Vyc6Cs';   // ← token baru dari BotFather
+    const TG_CHAT_ID = '1127118307';      // ← angka dari getUpdates
+
+    async function handleSubmit(e) {
       e.preventDefault();
-      const msg = document.getElementById('form-msg');
-      msg.style.display = 'block';
-      e.target.reset();
-      setTimeout(() => { msg.style.display = 'none'; }, 5000);
+      const form    = e.target;
+      const btn     = form.querySelector('.btn-submit');
+      const msgEl   = document.getElementById('form-msg');
+
+      const nama    = form.querySelector('input[autocomplete="name"]').value.trim();
+      const email   = form.querySelector('input[autocomplete="email"]').value.trim();
+      const subject = form.querySelector('input[placeholder="Subject / Topik"]')?.value.trim() || '-';
+      const pesan   = form.querySelector('textarea').value.trim();
+
+      // Loading state
+      btn.textContent = 'Mengirim...';
+      btn.disabled = true;
+      msgEl.style.display = 'none';
+      msgEl.style.color = 'var(--mint)';
+
+      const text =
+        `📬 *Pesan Baru dari Portofolio!*\n\n` +
+        `👤 *Nama:* ${nama}\n` +
+        `📧 *Email:* ${email}\n` +
+        `📌 *Subject:* ${subject}\n\n` +
+        `💬 *Pesan:*\n${pesan}`;
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id:    TG_CHAT_ID,
+            text:       text,
+            parse_mode: 'Markdown'
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          msgEl.style.color = 'var(--mint)';
+          msgEl.textContent = '✓ Pesan terkirim! Saya akan balas secepatnya.';
+          form.reset();
+        } else {
+          throw new Error(data.description || 'Gagal kirim');
+        }
+      } catch (err) {
+        msgEl.style.color = '#ff6b6b';
+        msgEl.textContent = '✗ Gagal kirim. Coba hubungi via WhatsApp atau email langsung.';
+        console.error('Telegram error:', err);
+      } finally {
+        msgEl.style.display = 'block';
+        btn.textContent = 'Kirim Pesan ✦';
+        btn.disabled = false;
+        setTimeout(() => { msgEl.style.display = 'none'; }, 6000);
+      }
     }
 
     /* ---- Tactile button feedback ---- */
